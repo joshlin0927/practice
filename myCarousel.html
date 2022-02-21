@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- bs -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- web css -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <section class="banner">
+        <div class="wholeSlider">
+          <div class="slider">
+            <div class="slides">
+              <div class="slide"><img src="./pic/1.jpg" alt="" /></div>
+              <div class="slide"><img src="./pic/2.jpg" alt="" /></div>
+              <div class="slide"><img src="./pic/3.jpg" alt="" /></div>
+              <div class="slide"><img src="./pic/4.jpg" alt="" /></div>
+            </div>
+          </div>
+          <div class="prev">
+            <i class="fa-solid fa-arrow-left"></i>
+          </div>
+          <div class="next">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.js"
+      integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let slider = document.querySelector(".slider");
+      let slides = document.querySelector(".slides");
+      let mouseLastPosition = 0;
+      let originalX;
+      let pressdown = false;
+
+      slider.addEventListener("mouseover", () => {
+        slider.style.cursor = "grab";
+        console.log("mouseLastPosition", mouseLastPosition);
+      });
+
+      slider.addEventListener("mousedown", (e) => {
+        pressdown = true;
+
+        slider.style.cursor = "grabbing";
+        originalX = e.offsetX - slides.offsetLeft;
+
+        // console.log("slides", slides.offsetLeft);
+        // console.log("mousePosition", e.offsetX);
+      });
+
+      slider.addEventListener("mouseup", () => {
+        slider.style.cursor = "grab";
+        pressdown = false;
+      });
+
+      slider.addEventListener("mousemove", (e) => {
+        if (!pressdown) return;
+        e.preventDefault();
+        mouseLastPosition = e.offsetX;
+        slides.style.left = `${mouseLastPosition - originalX}px`;
+
+        if (parseInt(slides.style.left) > 10) {
+          slides.style.left = `0px`;
+        }
+
+        let outer = slider.getBoundingClientRect();
+        let inner = slides.getBoundingClientRect();
+
+        // console.log("outer", outer);
+        // console.log("inner", inner);
+
+        if (inner.right < outer.right) {
+          slides.style.left = `-${inner.width - outer.width}px`;
+        }
+      });
+    </script>
+  </body>
+</html>
